@@ -1,0 +1,52 @@
+-----login.html-----
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login</title>
+</head>
+<body>
+    <h2>User Login</h2>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+-----LoginServlet.java-----
+import java.io.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Hardcoded validation (you can connect to DB later)
+        if ("admin".equals(username) && "12345".equals(password)) {
+            out.println("<h2>Welcome, " + username + "!</h2>");
+        } else {
+            out.println("<h3 style='color:red;'>Invalid username or password!</h3>");
+            out.println("<a href='login.html'>Try Again</a>");
+        }
+    }
+}
+
+----web.xml--
+<web-app>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+</web-app>
